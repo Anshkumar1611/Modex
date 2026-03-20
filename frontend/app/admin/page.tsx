@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
+import { BackLink, PageHeader } from "@/components/layout/shell";
 import { api } from "@/lib/api";
 
 export default function AdminPage() {
@@ -52,7 +52,7 @@ export default function AdminPage() {
         startTime: iso,
         totalSeats: seats,
       });
-      setSuccess(`Slot #${slotId} created.`);
+      setSuccess(`Slot #${slotId} created successfully.`);
       const d = new Date();
       d.setHours(d.getHours() + 1);
       d.setMinutes(0, 0, 0);
@@ -64,32 +64,32 @@ export default function AdminPage() {
     }
   };
 
+  const inputCls =
+    "w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-ink shadow-inner shadow-black/[0.02] focus:border-clinic/40 focus:ring-2 focus:ring-clinic/15 transition-all";
+
   return (
-    <div className="max-w-xl mx-auto space-y-8">
-      <div>
-        <Link href="/" className="text-sm text-clinic font-medium hover:underline">
-          ← Slots
-        </Link>
-        <h1 className="font-display text-3xl font-bold text-ink mt-4">
-          Create slot
-        </h1>
-        <p className="text-ink/55 mt-2 text-sm">
-          Add a visit window and number of seats (patients) for that slot.
-        </p>
+    <div className="max-w-xl mx-auto space-y-10">
+      <div className="space-y-6">
+        <BackLink href="/">All visits</BackLink>
+        <PageHeader
+          eyebrow="Admin"
+          title="Create a slot"
+          description="Open a new visit window and set how many patients can book for that time."
+        />
       </div>
 
       <form
         onSubmit={submit}
-        className="rounded-2xl border border-black/8 bg-white p-8 shadow-sm space-y-6"
+        className="rounded-3xl border border-line bg-white p-8 sm:p-10 shadow-soft space-y-7"
       >
-        <div>
-          <label className="block text-sm font-semibold text-ink mb-2">
+        <div className="space-y-2">
+          <label className="block text-sm font-bold text-ink/80">
             Doctor
           </label>
           <select
             value={doctorId}
             onChange={(e) => setDoctorId(e.target.value)}
-            className="w-full rounded-xl border border-black/15 px-4 py-3 bg-white"
+            className={inputCls}
           >
             {doctors.map((d) => (
               <option key={d.id} value={d.id}>
@@ -98,19 +98,19 @@ export default function AdminPage() {
             ))}
           </select>
         </div>
-        <div>
-          <label className="block text-sm font-semibold text-ink mb-2">
+        <div className="space-y-2">
+          <label className="block text-sm font-bold text-ink/80">
             Start time
           </label>
           <input
             type="datetime-local"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            className="w-full rounded-xl border border-black/15 px-4 py-3"
+            className={inputCls}
           />
         </div>
-        <div>
-          <label className="block text-sm font-semibold text-ink mb-2">
+        <div className="space-y-2">
+          <label className="block text-sm font-bold text-ink/80">
             Total seats
           </label>
           <input
@@ -119,19 +119,24 @@ export default function AdminPage() {
             max={200}
             value={totalSeats}
             onChange={(e) => setTotalSeats(e.target.value)}
-            className="w-full rounded-xl border border-black/15 px-4 py-3"
+            className={inputCls}
           />
+          <p className="text-xs text-ink/40">Between 1 and 200 patients per slot.</p>
         </div>
         {error && (
-          <p className="text-sm text-danger font-medium">{error}</p>
+          <div className="rounded-2xl bg-red-50 border border-danger/20 px-4 py-3 text-sm text-danger font-medium">
+            {error}
+          </div>
         )}
         {success && (
-          <p className="text-sm text-clinic font-medium">{success}</p>
+          <div className="rounded-2xl bg-clinicLight border border-clinic/20 px-4 py-3 text-sm text-clinic font-semibold">
+            {success}
+          </div>
         )}
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 rounded-xl bg-ink text-white font-semibold hover:bg-ink/90 disabled:opacity-50"
+          className="w-full py-4 rounded-full bg-ink text-white font-semibold shadow-lift hover:bg-ink/90 disabled:opacity-45 transition-all text-base"
         >
           {loading ? "Creating…" : "Create slot"}
         </button>

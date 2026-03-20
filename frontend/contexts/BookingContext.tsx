@@ -10,6 +10,7 @@ import React, {
   useState,
 } from "react";
 import { api } from "@/lib/api";
+import { SLOT_POLL_INTERVAL_MS } from "@/lib/constants";
 import type { Booking, SlotDetail, SlotSummary } from "@/lib/types";
 
 interface BookingContextValue {
@@ -101,7 +102,7 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
       stopPollingSlot();
       pollRef.current = setInterval(() => {
         api.getSlot(slotId).then(setSlotDetail).catch(() => {});
-      }, 2500);
+      }, SLOT_POLL_INTERVAL_MS);
     },
     [stopPollingSlot]
   );

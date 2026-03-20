@@ -1,5 +1,3 @@
-export type BookingStatus = "PENDING" | "CONFIRMED" | "FAILED";
-
 export interface SlotSummary {
   id: number;
   doctorId: number;
@@ -21,13 +19,4 @@ export interface SeatAvailability {
 
 export interface SlotDetail extends SlotSummary {
   seats: SeatAvailability[];
-}
-
-export interface Booking {
-  id: number;
-  slotId: number;
-  seatNumber: number;
-  status: BookingStatus;
-  createdAt: string;
-  expiresAt?: string | null;
 }

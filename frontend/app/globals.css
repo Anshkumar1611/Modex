@@ -2,6 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-mist text-ink antialiased;
+@layer base {
+  :root {
+    --ring: 168 56% 22%;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply text-ink antialiased font-sans;
+    background-color: #eef2f6;
+    background-image:
+      radial-gradient(ellipse 120% 80% at 0% -20%, rgba(10, 92, 82, 0.09), transparent 50%),
+      radial-gradient(ellipse 80% 60% at 100% 0%, rgba(194, 65, 12, 0.05), transparent 45%),
+      linear-gradient(180deg, #f7f9fc 0%, #eef2f6 40%, #e8ecf2 100%);
+    min-height: 100vh;
+  }
+
+  ::selection {
+    @apply bg-clinic/20 text-ink;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-clinic/40 ring-offset-2 rounded-lg;
+    --tw-ring-offset-color: #f7f9fc;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }
