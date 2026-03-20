@@ -1,0 +1,33 @@
+export type BookingStatus = "PENDING" | "CONFIRMED" | "FAILED";
+
+export interface SlotSummary {
+  id: number;
+  doctorId: number;
+  doctorName: string;
+  startTime: string;
+  totalSeats: number;
+  bookedCount: number;
+  availableCount: number;
+}
+
+export type SeatUiStatus = "available" | "pending" | "confirmed";
+
+export interface SeatAvailability {
+  seatNumber: number;
+  status: SeatUiStatus;
+  bookingId?: number;
+  expiresAt?: string | null;
+}
+
+export interface SlotDetail extends SlotSummary {
+  seats: SeatAvailability[];
+}
+
+export interface Booking {
+  id: number;
+  slotId: number;
+  seatNumber: number;
+  status: BookingStatus;
+  createdAt: string;
+  expiresAt?: string | null;
+}
