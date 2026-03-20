@@ -1,0 +1,13 @@
+# Render Blueprint — optional: connect repo and use "Apply render.yaml"
+# Or set these manually in the Web Service UI (see docs/DEPLOY_RENDER.md)
+
+services:
+  - type: web
+    name: modex-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"

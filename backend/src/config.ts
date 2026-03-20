@@ -38,12 +38,29 @@ function normalizeDatabaseUrl(url: string): string {
   return url;
 }
 
+/**
+ * CORS compares Origin to this value exactly. Browsers send no trailing slash
+ * (e.g. https://app.vercel.app). If FRONTEND_ORIGIN is set with a trailing /,
+ * the header won't match and fetch fails with "Failed to fetch" even on 200.
+ */
+export function normalizeFrontendOrigin(raw: string): string {
+  const t = raw.trim();
+  if (!t) return "http://localhost:3000";
+  try {
+    return new URL(t).origin;
+  } catch {
+    return t.replace(/\/+$/, "");
+  }
+}
+
 export const config = {
   port: Number(process.env.PORT) || 4000,
   databaseUrl: normalizeDatabaseUrl(
     process.env.DATABASE_URL?.trim() || DEFAULT_DB_URL
   ),
-  frontendOrigin: process.env.FRONTEND_ORIGIN || "http://localhost:3000",
+  frontendOrigin: normalizeFrontendOrigin(
+    process.env.FRONTEND_ORIGIN || "http://localhost:3000"
+  ),
 };
 
 /** For logs only — no password */
